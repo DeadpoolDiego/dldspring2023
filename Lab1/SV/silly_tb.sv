@@ -1,61 +1,66 @@
 `timescale 1ns / 1ps
 module tb ();
 
-   logic        a;
-   logic 	b;
-   logic 	c;
-   logic 	y;
-   logic        clk;   
+   logic        [3:0]a;
+   logic 		[3:0]b;
+   logic 		[3:0]c;
+   logic 		[3:0]y;
+   logic        clk;
+   logic        cout;
+   logic        [3:0]sum;   
+   logic		[3:0]sum_corr;
+   logic		[3:0]sum_correct;
+   logic		cin;
    
   // instantiate device under test
-   silly dut (a, b, c, y);
+   //fullAdder dut (a, b, c, y);
+
+   rippleCarry rcA1 (a,b,cin,sum,cout);
+
+
  ////////////////////////////////////////////////////////////////////
-   // 20 ns clock
-   initial 
+   // 20 ns clock	
+	
+
+	initial 
      begin	
-	clk = 1'b1;
-	forever #10 clk = ~clk;
+		clk = 1'b1;
+		forever #10 clk = ~clk;
      end
 
+	integer handle3;
+	integer desc3;
+	integer i;
 
-   initial
-     begin
-    
-	#0   a = 1'b0;	
-	#0   b = 1'b0;
-	#0   c = 1'b0;
+	initial
+		begin
+		  handle3 = $fopen("rca.out");
+		  desc3 = handle3;
+		  #1250 $finish;
+		end
 
-	#20  a = 1'b1;
-	#0   b = 1'b0;
-	#0   c = 1'b0;
-
-	#20  a = 1'b0;
-	#0   b = 1'b1;
-	#0   c = 1'b0;
-
-	#20  a = 1'b1;
-	#0   b = 1'b1;
-	#0   c = 1'b0;
-
-	#0   a = 1'b0;	
-	#0   b = 1'b0;
-	#0   c = 1'b1;
-
-	#20  a = 1'b1;
-	#0   b = 1'b0;
-	#0   c = 1'b1;
-
-	#20  a = 1'b0;
-	#0   b = 1'b1;
-	#0   c = 1'b1;
-
-	#20  a = 1'b1;
-	#0   b = 1'b1;
-	#0   c = 1'b1;		
+	initial
+		begin
+			for (i=0; i< 128; i=i+1)
+				begin
+				@(posedge clk)
+				  begin	
+				  	a = $random;
+					b = $random;
+				  end
+				@(negedge clk)
+				  begin
+				  		$fdisplay(desc3, "%h %h || %h | %h | %b", a, b, sum, sum_correct, (sum == sum_corr));
+				  end
+				end
+		end // @(negedge clk)
 
 
 	
-     end
+	
+
+
+	
 
    
 endmodule
