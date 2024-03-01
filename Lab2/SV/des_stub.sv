@@ -139,7 +139,7 @@ module GenerateKeys (Key, SubKey1, SubKey2, SubKey3, SubKey4,
 
 endmodule // GenerateKeys
 
-module PC1 (key, left_block, right_block);
+module PC1 (key, c1, d1);
 
    input logic [63:0]  key;
    	output logic [27:0] c1;
@@ -208,13 +208,6 @@ module PC1 (key, left_block, right_block);
 	assign d1[1] = key[64-12];
 	assign d1[0] = key[64-4];
 
-
-	
-
-
-	//Shuffled Deck
-	//assign out_block[55:0] = {shiftedLeftBlock[27:0],shiftedRightBlock[27:0]};
-
 endmodule // PC1
 
 module PC2 (left_block, right_block, subkey);
@@ -222,6 +215,58 @@ module PC2 (left_block, right_block, subkey);
    input logic [27:0] left_block;
    input logic [27:0] right_block;
    output logic [47:0] subkey;
+   logic [55:0] combined;
+   assign combined[55:0] = {left_block[27:0],right_block[27:0]};
+
+
+   assign subkey[47] = combined[56-14];
+   assign subkey[46] = combined[56-17];
+   assign subkey[45] = combined[56-11];
+   assign subkey[44] = combined[56-24];
+   assign subkey[43] = combined[56-1];
+   assign subkey[42] = combined[56-5];
+   assign subkey[41] = combined[56-3];
+   assign subkey[40] = combined[56-28];
+   assign subkey[39] = combined[56-15];
+   assign subkey[38] = combined[56-6];
+   assign subkey[37] = combined[56-21];
+   assign subkey[36] = combined[56-10];
+   assign subkey[35] = combined[56-23];
+   assign subkey[34] = combined[56-19];
+   assign subkey[33] = combined[56-12];
+   assign subkey[32] = combined[56-4];
+   assign subkey[31] = combined[56-26];
+   assign subkey[30] = combined[56-8];
+   assign subkey[29] = combined[56-16];
+   assign subkey[28] = combined[56-7];
+   assign subkey[27] = combined[56-27];
+   assign subkey[26] = combined[56-20];
+   assign subkey[25] = combined[56-13];
+   assign subkey[24] = combined[56-2];
+   assign subkey[23] = combined[56-41];
+   assign subkey[22] = combined[56-52];
+   assign subkey[21] = combined[56-31];
+   assign subkey[20] = combined[56-37];
+   assign subkey[19] = combined[56-47];
+   assign subkey[18] = combined[56-55];
+   assign subkey[17] = combined[56-30];
+   assign subkey[16] = combined[56-40];
+   assign subkey[15] = combined[56-51];
+   assign subkey[14] = combined[56-45];
+   assign subkey[13] = combined[56-33];
+   assign subkey[12] = combined[56-48];
+   assign subkey[11] = combined[56-44];
+   assign subkey[10] = combined[56-49];
+   assign subkey[9] = combined[56-39];
+   assign subkey[8] = combined[56-56];
+   assign subkey[7] = combined[56-34];
+   assign subkey[6] = combined[56-53];
+   assign subkey[5] = combined[56-46];
+   assign subkey[4] = combined[56-42];
+   assign subkey[3] = combined[56-50];
+   assign subkey[2] = combined[56-36];
+   assign subkey[1] = combined[56-29];
+   assign subkey[0] = combined[56-32];
 
 endmodule // PC2
 
@@ -229,7 +274,42 @@ endmodule // PC2
 module SF (inp_block, out_block);
 
    input logic [31:0] inp_block;
-   output logic [31:0] out_block;
+output logic [31:0] out_block;
+
+	assign out_block[31] = inp_block[32-16];
+	assign out_block[30] = inp_block[32-7];
+	assign out_block[29] = inp_block[32-20];
+	assign out_block[28] = inp_block[32-21];
+	assign out_block[27] = inp_block[32-29];
+	assign out_block[26] = inp_block[32-12];
+	assign out_block[25] = inp_block[32-28];
+	assign out_block[24] = inp_block[32-17];
+	assign out_block[23] = inp_block[32-1];
+	assign out_block[22] = inp_block[32-15];
+	assign out_block[21] = inp_block[32-23];
+	assign out_block[20] = inp_block[32-26];
+	assign out_block[19] = inp_block[32-5];
+	assign out_block[18] = inp_block[32-18];
+	assign out_block[17] = inp_block[32-31];
+	assign out_block[16] = inp_block[32-10];
+	assign out_block[15] = inp_block[32-2];
+	assign out_block[14] = inp_block[32-8];
+	assign out_block[13] = inp_block[32-24];
+	assign out_block[12] = inp_block[32-14];
+	assign out_block[11] = inp_block[32-32];
+	assign out_block[10] = inp_block[32-27];
+	assign out_block[9] = inp_block[32-3];
+	assign out_block[8] = inp_block[32-9];
+	assign out_block[7] = inp_block[32-19];
+	assign out_block[6] = inp_block[32-13];
+	assign out_block[5] = inp_block[32-30];
+	assign out_block[4] = inp_block[32-6];
+	assign out_block[3] = inp_block[32-22];
+	assign out_block[2] = inp_block[32-11];
+	assign out_block[1] = inp_block[32-4];
+	assign out_block[0] = inp_block[32-25];
+
+
 
 endmodule // SF
 
@@ -239,13 +319,93 @@ module EF (inp_block, out_block);
    input logic [31:0] inp_block;
    output logic [47:0] out_block;
 
+   assign out_block[47] = inp_block[32-32];
+   assign out_block[46] = inp_block[32-1];
+   assign out_block[45] = inp_block[32-2];
+   assign out_block[44] = inp_block[32-3];
+   assign out_block[43] = inp_block[32-4];
+   assign out_block[42] = inp_block[32-5];
+   assign out_block[41] = inp_block[32-4];
+   assign out_block[40] = inp_block[32-5];
+   assign out_block[39] = inp_block[32-6];
+   assign out_block[38] = inp_block[32-7];
+   assign out_block[37] = inp_block[32-8];
+   assign out_block[36] = inp_block[32-9];
+   assign out_block[35] = inp_block[32-8];
+   assign out_block[34] = inp_block[32-9];
+   assign out_block[33] = inp_block[32-10];
+   assign out_block[32] = inp_block[32-11];
+   assign out_block[31] = inp_block[32-12];
+   assign out_block[30] = inp_block[32-13];
+   assign out_block[29] = inp_block[32-12];
+   assign out_block[28] = inp_block[32-13];
+   assign out_block[27] = inp_block[32-14];
+   assign out_block[26] = inp_block[32-15];
+   assign out_block[25] = inp_block[32-16];
+   assign out_block[24] = inp_block[32-17];
+   assign out_block[23] = inp_block[32-16];
+   assign out_block[22] = inp_block[32-17];
+   assign out_block[21] = inp_block[32-18];
+   assign out_block[20] = inp_block[32-19];
+   assign out_block[19] = inp_block[32-20];
+   assign out_block[18] = inp_block[32-21];
+   assign out_block[17] = inp_block[32-20];
+   assign out_block[16] = inp_block[32-21];
+   assign out_block[15] = inp_block[32-22];
+   assign out_block[14] = inp_block[32-23];
+   assign out_block[13] = inp_block[32-24];
+   assign out_block[12] = inp_block[32-25];
+   assign out_block[11] = inp_block[32-24];
+   assign out_block[10] = inp_block[32-25];
+   assign out_block[9] = inp_block[32-26];
+   assign out_block[8] = inp_block[32-27];
+   assign out_block[7] = inp_block[32-28];
+   assign out_block[6] = inp_block[32-29];
+   assign out_block[5] = inp_block[32-28];
+   assign out_block[4] = inp_block[32-29];
+   assign out_block[3] = inp_block[32-30];
+   assign out_block[2] = inp_block[32-31];
+   assign out_block[1] = inp_block[32-32];
+   assign out_block[0] = inp_block[32-1];
+   
+
+
 endmodule // EF
 
 module feistel (inp_block, subkey, out_block);
 
    input logic [31:0]  inp_block;
    input logic [47:0]  subkey;
+   logic [47:0] ef_out;
+   logic [47:0] xor_out;
+ 	logic [3:0] S8_Out;
+	logic [3:0] S7_Out;
+	logic [3:0] S6_Out;
+	logic [3:0] S5_Out;
+	logic [3:0] S4_Out;
+	logic [3:0] S3_Out;
+	logic [3:0] S2_Out;
+	logic [3:0] S1_Out;
    output logic [31:0] out_block;
+logic [31:0] StraightIn;
+
+	EF ex1 (inp_block, ef_out);
+
+	assign xor_out = ef_out ^ subkey;
+
+   S1_Box s1 (xor_out[5:0], S8_Out);
+   S2_Box s2 (xor_out[11:6], S7_Out);
+   S3_Box s3 (xor_out[17:12], S6_Out);
+   S4_Box s4 (xor_out[23:18], S5_Out);
+   S5_Box s5 (xor_out[29:24], S4_Out);
+   S6_Box s6 (xor_out[35:30], S3_Out);
+   S7_Box s7 (xor_out[41:36], S2_Out);
+   S8_Box s8 (xor_out[47:42], S1_Out);
+
+	assign StraightIn = {S8_Out, S7_Out, S6_Out, S5_Out, S4_Out, S3_Out, S2_Out, S1_Out};
+
+	SF sf1 (StraightIn, out_block);
+
 
 endmodule // Feistel
 
