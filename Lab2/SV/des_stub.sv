@@ -60,82 +60,82 @@ module GenerateKeys (Key, SubKey1, SubKey2, SubKey3, SubKey4,
    logic [27:0] c16;
    logic [27:0] d16;
 
-		PC1 I(key,c1,d1);
+		PC1 I(Key,c1,d1);
 
 
 	assign c2 = {c1[26:0],c1[27]};
 	assign d2 = {d1[26:0],d1[27]};
-	PC2 II(c2, d2, subkey1);
+	PC2 II(c2, d2, SubKey1);
 
 
 	assign c3 = {c2[26:0],c2[27]};
 	assign d3 = {d2[26:0],d2[27]};
-	PC2 III(c3,d3,subkey2);
+	PC2 III(c3,d3,SubKey2);
 
 
 	assign c4 = {c3[25:0],c3[27:26]};
 	assign d4 = {d3[25:0],d3[27:26]};
-	PC2 IV(c4,s4,subkey4);
+	PC2 IV(c4,d4,SubKey4);
 
 
 	assign c5 = {c4[25:0],c4[27:26]};
 	assign d5 = {d4[25:0],d4[27:26]};
-	PC2 V(c5,d5,subkey5);
+	PC2 V(c5,d5,SubKey5);
 
 
 	assign c6 = {c5[25:0],c5[27:26]};
 	assign d6 = {d5[25:0],d5[27:26]};
-	PC2 VI(c6,d6,subkey6);
+	PC2 VI(c6,d6,SubKey6);
 
 
 	assign c7 = {c6[25:0],c6[27:26]};
 	assign d7 = {d6[25:0],d6[27:26]};
-	PC2 VII(c7,d7,subkey7);
+	PC2 VII(c7,d7,SubKey7);
 
 
 	assign c8 = {c7[25:0],c7[27:26]};
 	assign d8 = {d7[25:0],d7[27:26]};
-	PC2 VIII(c8,d8,subkey8);
+	PC2 VIII(c8,d8,SubKey8);
 
 
 	assign c9 = {c8[25:0],c8[27:26]};
 	assign d9 = {d8[25:0],d8[27:26]};
-	PC2 IX(c9,d9,subkey9);
+	PC2 IX(c9,d9,SubKey9);
 
 
 	assign c10 = {c9[26:0],c9[27]};
 	assign d10 = {d9[26:0],d9[27]};
-	PC2 X(c10,d10,subkey10);
+	PC2 X(c10,d10,SubKey10);
 
 
 	assign c11 = {c10[25:0],c10[27]};
 	assign d11 = {d10[25:0],d10[27]};
-	PC2 XI(c11,d11,subkey11);
+	PC2 XI(c11,d11,SubKey11);
 
 
 	assign c12 = {c11[25:0],c11[27]};
 	assign d12 = {d11[25:0],d11[27:26]};
-	PC2 XII(c12,d12,subkey12);
+	PC2 XII(c12,d12,SubKey12);
 
 
 	assign c13 = {c12[25:0],c12[27:26]};
 	assign d13 = {d12[25:0],d12[27:26]};
-	PC2 XIII(c13,d13,subkey13);
+	PC2 XIII(c13,d13,SubKey13);
 
 
 	assign c14 = {c13[25:0],c13[27:26]};
 	assign d14 = {d13[25:0],d13[27:26]};
-	PC2 XIV(c14,d14,subkey14);
+	PC2 XIV(c14,d14,SubKey14);
 
 
 	assign c15 = {c14[25:0],c14[27:26]};
 	assign d15 = {d14[25:0],d14[27:26]};
-	PC2 XV(c15,d15,subkey15);
+	PC2 XV(c15,d15,SubKey15);
 
 
 	assign c16 = {c15[26:0],c15[27]};
 	assign d16 = {d15[26:0],d15[27]};
-	PC2 XVI(c16,d16,subkey16);
+	PC2 XVI(c16,d16,SubKey16);
 
 endmodule // GenerateKeys
 
@@ -415,6 +415,16 @@ module round (inp_block, subkey, out_block);
    input logic [63:0]  inp_block;
    input logic [47:0]  subkey;
    output logic [63:0] out_block;
+
+   logic [31:0] inp_left, inp_right;
+   logic [31:0] feistel_out;
+   logic [31:0] out_right;
+
+   assign inp_left = inp_block[63:32];
+   assign inp_right = inp_block[31:0];
+
+   feistel f(inp_right, subkey, feistel_out);
+   assign out_block[31:0] = out_right;
 
 endmodule // round1
 
