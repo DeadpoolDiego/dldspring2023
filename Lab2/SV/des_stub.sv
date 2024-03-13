@@ -1235,6 +1235,7 @@ module DES (input logic [63:0] key, input logic [63:0] plaintext,
    logic [63:0] 	r2_out;
    logic [63:0] 	r1_out;
 
+	logic [47:0] Mux1, Mux2, Mux3, Mux4, Mux5, Mux6, Mux7, Mux8, Mux9, Mux10, Mux11, Mux12, Mux13, Mux14, Mux15, Mux16;
 
    
    // SubKey generation
@@ -1244,39 +1245,58 @@ module DES (input logic [63:0] key, input logic [63:0] plaintext,
 		    SubKey13, SubKey14, SubKey15, SubKey16);
    // encrypt (encrypt=1) or decrypt (encrypt=0) 
 
+
+
    // Initial Permutation (IP)
    IP b1 (plaintext, ip_out);
    // round 1
-   round r1 (ip_out, SubKey1, r1_out);
+
+   assign Mux1 = encrypt ? SubKey1 : SubKey16;
+   round r1 (ip_out, Mux1, r1_out);
    // round 2
-   round r2 (r1_out, SubKey2, r2_out);
-   // round 3
-   round r3 (r2_out, SubKey3, r3_out);
-   // round 4
-   round r4 (r3_out, SubKey4, r4_out);
-   // round 5
-   round r5 (r4_out, SubKey5, r5_out);
-   // round 6
-   round r6 (r5_out, SubKey6, r6_out);
-   // round 7
-   round r7 (r6_out, SubKey7, r7_out);
-   // round 8
-   round r8 (r7_out, SubKey8, r8_out);
-   // round 9
-   round r9 (r8_out, SubKey9, r9_out);
+   assign Mux2 = encrypt ? SubKey2 : SubKey15;
+   round r2 (r1_out, Mux2, r2_out);
+   // rMux
+   assign Mux3 = encrypt ? SubKey3 : SubKey14;
+   round r3 (r2_out, Mux3, r3_out);
+   // rMux
+   assign Mux4 = encrypt ? SubKey4 : SubKey13;
+   round r4 (r3_out, Mux4, r4_out);
+   // rMux
+   assign Mux5 = encrypt ? SubKey5 : SubKey12;
+   round r5 (r4_out, Mux5, r5_out);
+   // rMux
+   assign Mux6 = encrypt ? SubKey6 : SubKey11;
+   round r6 (r5_out, Mux6, r6_out);
+   // rMux
+   assign Mux7 = encrypt ? SubKey7 : SubKey10;
+   round r7 (r6_out, Mux7, r7_out);
+   // rMux
+   assign Mux8 = encrypt ? SubKey8 : SubKey9;
+   round r8 (r7_out, Mux8, r8_out);
+   // rMux
+   assign Mux9 = encrypt ? SubKey9 : SubKey8;
+   round r9 (r8_out, Mux9, r9_out);
    // round 10
-   round r10 (r9_out, SubKey10, r10_out);
+   assign Mux10 = encrypt ? SubKey10 : SubKey7;
+   round r10 (r9_out, Mux10, r10_out);
    // round 11
-   round r11 (r10_out, SubKey11, r11_out);
-   // round 12
-   round r12 (r11_out, SubKey12, r12_out);
-   // round 13
-   round r13 (r12_out, SubKey13, r13_out);
-   // round 14
-   round r14 (r13_out, SubKey14, r14_out);
-   // round 15
-   round r15 (r14_out, SubKey15, r15_out);
+   assign Mux11 = encrypt ? SubKey11 : SubKey6;
+   round r11 (r10_out, Mux11, r11_out);
+   // roMux
+   assign Mux12 = encrypt ? SubKey12 : SubKey5;
+   round r12 (r11_out, Mux12, r12_out);
+   // roMux
+   assign Mux13 = encrypt ? SubKey13 : SubKey4;
+   round r13 (r12_out, Mux13, r13_out);
+   // roMux
+   assign Mux14 = encrypt ? SubKey14 : SubKey3;
+   round r14 (r13_out, Mux14, r14_out);
+   // roMux
+   assign Mux15 = encrypt ? SubKey15 : SubKey2;
+   round r15 (r14_out, Mux15, r15_out);
    // round 16
+   assign Mux16 = encrypt ? SubKey16 : SubKey1;
    round r16 (r15_out, SubKey16, r16_out);
    // Final Permutation (IP^{-1}) (swap output of round16)
    FP FP({r16_out[31:0], r16_out[63:32]}, ciphertext);
