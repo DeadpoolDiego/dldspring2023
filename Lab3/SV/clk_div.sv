@@ -13,7 +13,7 @@ module clk_div (input logic clk, input logic rst, output logic clk_en);
          clk_en <= ~clk_en;
       end
       else
-         clkPcount <= clk_count + 1;
+         clk_count <= clk_count + 1;
          clk_en <= 1'b0;
       end
    
