@@ -27,7 +27,7 @@ module top_demo
   input  logic [3:0] btn,
   input  logic       sysclk_125mhz,
   input  logic       rst,
-  // output  
+  // output
   output logic [7:0] led,
   output logic sseg_ca,
   output logic sseg_cb,
@@ -43,9 +43,14 @@ module top_demo
   logic [16:0] CURRENT_COUNT;
   logic [16:0] NEXT_COUNT;
   logic        smol_clk;
-  
+  logic        smaller_clk;
   // Place TicTacToe instantiation here
-  
+
+ 
+  clk_div realClk(sysclk_125mhz, btn[0], smaller_clk); 
+  FSM lights(smaller_clk, btn[0], sw[4], sw[3], led[6:1]);
+
+
   // 7-segment display
   segment_driver driver(
   .clk(smol_clk),
@@ -67,7 +72,7 @@ module top_demo
     else
       CURRENT_COUNT = NEXT_COUNT;
   end
-  
+
   // Increment logic
   assign NEXT_COUNT = CURRENT_COUNT == 17'd100000 ? 17'h00000 : CURRENT_COUNT + 1;
 
